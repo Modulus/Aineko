@@ -10,7 +10,6 @@ def sites_file():
     sites_file = os.path.join(config_path, "{}{}{}".format('config', os.path.sep, 'sites.yaml'))
     return sites_file
 
-
 def test_config_reader(sites_file):
     data = read("config/sites.yaml")
     assert data is not None

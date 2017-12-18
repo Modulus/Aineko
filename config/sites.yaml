@@ -1,15 +1,15 @@
 ---
   sites:
-    - http://www.vg.no
+    - http://vg.no
     - http://dagbladet.no
-    - http://www.dn.no
-    - http://e24.no
-    - http://tek.no
-    - http://hardware.no
-    - http://itavisen.no
-    - http://cw.no
-    - http://cnn.no
-    - http://reuters.com
-    - http://www.morningstar.com
-    - https://www.bloomberg.com
-    - http://money.cnn.com/
+#    - http://www.dn.no
+#    - http://e24.no
+#    - http://tek.no
+#    - http://hardware.no
+#    - http://itavisen.no
+#    - http://cw.no
+#    - http://cnn.no
+#    - http://reuters.com
+#    - http://www.morningstar.com
+#    - https://www.bloomberg.com
+#    - http://money.cnn.com/
