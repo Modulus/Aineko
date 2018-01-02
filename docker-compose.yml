@@ -1,0 +1,45 @@
+version: "3.3"
+services:
+  elasticsearch:
+    image: docker.elastic.co/elasticsearch/elasticsearch:6.1.1
+    container_name: anieko_elasticsearch
+    volumes:
+      - ./docker/elastic/config/elasticsearch.yml:/usr/share/elasticsearch/config/elasticsearch.yml
+    ports:
+      - "9200:9200"
+      - "9300:9300"
+    environment:
+      transport.host: "0.0.0.0"
+      http.host: "0.0.0.0"
+      ES_JAVA_OPTS: "-Xmx256m -Xms256m"
+    networks:
+      - aineko_network
+  kibana:
+      depends_on:
+        - elasticsearch
+      image: docker.elastic.co/kibana/kibana:6.1.1
+      container_name: aineko_kibana
+      ports:
+        - "5601:5601"
+      volumes:
+        - ./docker/elastic/conifg/kibana.yml:/usr/share/kibana/config/kibana.yml
+      networks:
+        - aineko_network
+#    cassandra:
+#    image: cassandra:3.11.1
+##    ports:
+##      - "5556:7000"
+#    networks:
+#      - aineko_network
+#    labels:
+#      role: "Database"
+#      type: "Cassandra"
+#      tech: "NoSQL"
+#    container_name: aineko_cassandra
+#    environment:
+#      CASSANDRA_LISTEN_ADDRESS: "192.168.1.4"
+#      CASSANDRA_BROADCAST_ADDRESS: "192.168.1.4"
+
+networks:
+  aineko_network:
+    driver: bridge
