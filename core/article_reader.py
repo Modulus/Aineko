@@ -1,7 +1,7 @@
 from core.config_reader import read
 import os
 import newspaper
-
+import multiprocessing
 
 def _collect_sites():
     config_path = os.path.dirname(os.path.realpath(__file__))
@@ -41,9 +41,33 @@ def collect_articles():
         articles = paper.articles
         for article in articles:
             try:
-                article.download()
-                article.parse()
-                articles.append(article)
+                article_array.append()
             except newspaper.article.ArticleException as ex:
                 print(ex)
     return article_array
+
+def _extract_articles(papers):
+    article_array = []
+    for paper in papers:
+        for article in paper.articles:
+            try:
+                article.parse()
+                article.nlp()
+                article_array.append(article)
+            except newspaper.article.ArticleException as ex:
+                print(ex)
+        return article_array
+
+
+
+def collect_articles_pool(memoize_articles=False):
+    sites = _collect_sites()
+    if len(sites) < multiprocessing.cpu_count():
+        papers = []
+        for site in sites:
+            papers.append(newspaper.build(str(site), memoize_articles=memoize_articles))
+        newspaper.news_pool.set(papers, threads_per_source=1)
+        newspaper.news_pool.join()
+        return _extract_articles(papers)
+    else:
+        return None
