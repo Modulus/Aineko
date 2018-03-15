@@ -25,6 +25,12 @@ services:
         - ./docker/elastic/conifg/kibana.yml:/usr/share/kibana/config/kibana.yml
       networks:
         - aineko_network
+  redis:
+    image: redis:3.2.11
+    container_name: aineko_redis
+    networks:
+      - aineko_network
+
 #    cassandra:
 #    image: cassandra:3.11.1
 ##    ports:
