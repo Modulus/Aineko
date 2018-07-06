@@ -1,10 +1,11 @@
 pipeline {
     agent any
     stages {
-        stage('Checkout') {
+        stage('Test') {
             steps {
-                echo 'Hello world!'
-                sh "ls -la"
+                echo 'Running tests'
+                sh "pip install -r requirements.txt"
+                sh "cd tests && pytest ."
             }
         }
         stage("Build"){
