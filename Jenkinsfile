@@ -7,5 +7,11 @@ pipeline {
                 sh "ls -la"
             }
         }
+        stage("Build"){
+          steps {
+            echo "hallais!"
+            sh "ls -la"
+          }
+        }
     }
 }
