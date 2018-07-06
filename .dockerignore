@@ -1,0 +1,6 @@
+.idea
+.tests
+venv
+*.iml
+docker-compose
+README.rst

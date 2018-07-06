@@ -8,5 +8,5 @@ RUN pip install -r requirements.txt
 #HEALTHCHECK CMD curl --fail http://localhost:5000/health || exit 1
 
 
-CMD ["python", "backend.py"]
+CMD ["python", "main.py"]
 #CMD ["gunicorn", "--log-level=info", "--timeout=260", "--bind", "0.0.0.0:5000", "app:app"]

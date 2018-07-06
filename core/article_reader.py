@@ -2,20 +2,26 @@ from core.config_reader import read
 import os
 import newspaper
 import multiprocessing
+import logging
+
 
 def _collect_sites():
+    logging.info("Collecting config from confing/sites.yaml")
     config_path = os.path.dirname(os.path.realpath(__file__))
     sites_file = os.path.join(config_path, os.pardir, 'config', 'sites.yaml')
     sites = read(sites_file)
     if "sites" in sites:
+        logging.debug("Found sites, returning")
         return sites["sites"]
     else:
+        logging.error("No sites found, returning empty list")
         return []
 
-"""
 
-"""
 def check_url(url):
+    """
+    Check if url can be downloaded
+    """
     paper = newspaper.build(url)
     articles = paper.articles
     parsed_articles = []
@@ -32,7 +38,6 @@ def check_url(url):
         return False
 
 
-
 def collect_articles():
     sites = _collect_sites()
     article_array = []
@@ -41,10 +46,11 @@ def collect_articles():
         articles = paper.articles
         for article in articles:
             try:
-                article_array.append()
+                article_array.append(article)
             except newspaper.article.ArticleException as ex:
-                print(ex)
+                logging.error("Failed to extract article {}".format(ex))
     return article_array
+
 
 def _extract_articles(papers):
     article_array = []
@@ -57,7 +63,6 @@ def _extract_articles(papers):
             except newspaper.article.ArticleException as ex:
                 print(ex)
         return article_array
-
 
 
 def collect_articles_pool(memoize_articles=False):
