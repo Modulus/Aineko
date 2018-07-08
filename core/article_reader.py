@@ -42,10 +42,14 @@ def collect_articles():
     sites = _collect_sites()
     article_array = []
     for site in sites:
-        paper = newspaper.build(site)
+        logging.info("Collecting articles for site: {}".format(site))
+        paper = newspaper.build(site, memoize_articles=False)
+        logging.info("Paper: {}".format(paper))
         articles = paper.articles
+        logging.info("Found all articles")
         for article in articles:
             try:
+                logging.trace("Article url: {}".format(article.url))
                 article_array.append(article)
             except newspaper.article.ArticleException as ex:
                 logging.error("Failed to extract article {}".format(ex))
@@ -56,6 +60,7 @@ def _extract_articles(papers):
     article_array = []
     for paper in papers:
         for article in paper.articles:
+            logging.info("Parsing article at {}".format(article.url))
             try:
                 article.parse()
                 article.nlp()
@@ -70,7 +75,9 @@ def collect_articles_pool(memoize_articles=False):
     if len(sites) < multiprocessing.cpu_count():
         papers = []
         for site in sites:
+            logging.info("Collecting data for site: {}".format(site))
             papers.append(newspaper.build(str(site), memoize_articles=memoize_articles))
+        logging.info("Finished collecting articles")
         newspaper.news_pool.set(papers, threads_per_source=1)
         newspaper.news_pool.join()
         return _extract_articles(papers)

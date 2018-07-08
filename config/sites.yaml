@@ -1,7 +1,10 @@
 ---
   sites:
-    - http://vg.no
-    - http://dagbladet.no
+   # - http://vg.no
+    - http://www.dagbladet.no
+    #- http://www.nrk.no
+    #- http://www.ba.no
+    #- http://bt.no
 #    - http://www.dn.no
 #    - http://e24.no
 #    - http://tek.no
