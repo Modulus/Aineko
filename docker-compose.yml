@@ -13,11 +13,13 @@ services:
       http.host: "0.0.0.0"
       ES_JAVA_OPTS: "-Xmx256m -Xms256m"
       cluster.name: "aineko_elastic"
-      network.host: 0.0.0.0
-
-      discovery.zen.minimum_master_nodes: 1
+      network.host: "0.0.0.0"
+      discovery.zen.minimum_master_nodes: "1"
       discovery.type: "single-node"
-
+    ulimits:
+      memlock:
+        soft: -1
+        hard: -1
     networks:
       - aineko_network
   kibana:
@@ -25,6 +27,10 @@ services:
         - elasticsearch
       image: docker.elastic.co/kibana/kibana-oss:6.3.0
       container_name: aineko_kibana
+      environment:
+        SERVER_NAME: kibananananana
+        ELASTICSEARCH_URL: http://elasticsearch:9200
+
       ports:
         - "5601:5601"
       environment:
@@ -33,11 +39,11 @@ services:
         elasticsearch.url: http://elasticsearch:9200
       networks:
         - aineko_network
-  redis:
-    image: redis:3.2.11
-    container_name: aineko_redis
-    networks:
-      - aineko_network
+  #redis:
+  #  image: redis:3.2.11
+  #  container_name: aineko_redis
+   # networks:
+   #   - aineko_network
 
 #    cassandra:
 #    image: cassandra:3.11.1

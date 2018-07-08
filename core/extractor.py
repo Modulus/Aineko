@@ -28,3 +28,10 @@ def extract_articles(articles, keywords):
 
     return r_articles
 
+
+def to_dict(article, *args):
+    if args:
+        data = {key: value for key, value in article.__dict__.items() if key in args and value}
+        return data
+    else:
+        return dict(filter(lambda prop : prop in args, article.__dict__.items()))

@@ -5,7 +5,9 @@
 __pycache__/
 *.py[cod]
 *$py.class
+.pytest_cache
 
+*.iml
 # C extensions
 *.so
 
@@ -97,4 +99,3 @@ ENV/
 .ropeproject
 ### Vagrant template
 .vagrant/
-
