@@ -1,7 +1,4 @@
 ---
-  elasticsearch:
-    hosts:
-      - http://localhost:9200
   sites:
     - http://vg.no
     - http://www.dagbladet.no
@@ -16,11 +13,9 @@
     - http://cw.no
     - http://cnn.no
     - http://reuters.com
+    - http://www.morningstar.com
     - https://www.bloomberg.com
     - http://money.cnn.com/
-    - http://theverge.com
-    - https://www.anandtech.com/
-    - https://arstechnica.com/
   tags:
     - war
     - explosion

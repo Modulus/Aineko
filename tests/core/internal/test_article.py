@@ -1,5 +1,5 @@
-from newspaper import Article
-from faker import Faker
+#from newspaper import Article
+#from faker import Faker
 #from core.internal import article
 
 #def test_convert_to_dict():
