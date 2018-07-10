@@ -6,7 +6,9 @@ Install on windows
 -------------------
 1. Install lxml for windows http://www.lfd.uci.edu/~gohlke/pythonlibs/#lxml
 2. pip install -r requirements.txt
+3. curl https://raw.githubusercontent.com/codelucas/newspaper/master/download_corpora.py | python3
 
 Install on *nix/mac
 -------------------
-- pip install -r requirements.txt
+1. pip install -r requirements.txt
+2. curl https://raw.githubusercontent.com/codelucas/newspaper/master/download_corpora.py | python3

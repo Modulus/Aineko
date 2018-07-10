@@ -16,14 +16,15 @@ import logging
 import sys
 from elasticsearch import Elasticsearch
 
-
-logging.basicConfig(level=logging.INFO)
+FORMAT = "%(asctime)-15s - %(levelname)s:%(name)s:%(message)s"
+logging.basicConfig(level=logging.INFO, format=FORMAT)
 
 logger = logging.getLogger("Main")
 client = Elasticsearch()
 
 def do_work():
     logger.info("Collecting articles using threads")
+    start_time = time.time()
     articles = article_reader.collect_articles_pool()
     #articles = article_reader.collect_articles()
     for article in articles:
@@ -43,11 +44,19 @@ def do_work():
             logger.warning("Article does not have text, skipping {}".format(curr_article))
 
     logger.info("Done deal!")
+    end_time = time.time()
+    logging.info("Started at: %s, ended at: %s, duration: %s", start_time, end_time, end_time - start_time)
 
 
 if __name__ == "__main__":
     logger.info("Starting shit")
+
+    # Run before first interval ( or else you would have to wait x minutes for it to run...)
     do_work()
-    rx.Observable.interval(1000).to_blocking().for_each(lambda x, y: do_work())
+
+    minutes = 10
+    ms = minutes * 60 * 1000
+
+    rx.Observable.interval(ms).to_blocking().for_each(lambda x, y: do_work())
 
 
