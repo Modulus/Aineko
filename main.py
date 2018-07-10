@@ -6,6 +6,7 @@ import time
 import rx
 from rx import Observable
 import numpy as np
+import os
 
 from core import article_reader
 from core import extractor
@@ -20,6 +21,7 @@ logger = logging.getLogger("Main")
 config = Config("config/sites.yaml")
 
 def run():
+
 
     logger.info("Collecting articles using threads")
     start_time = time.time()
@@ -44,7 +46,7 @@ if __name__ == "__main__":
     # Run before first interval ( or else you would have to wait x minutes for it to run...)
     run()
 
-    minutes = 10
+    minutes = 20
     ms = minutes * 60 * 1000
 
     rx.Observable.interval(ms).to_blocking().for_each(lambda x, y: run())

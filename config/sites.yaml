@@ -1,7 +1,5 @@
 ---
-  elasticsearch:
-    hosts:
-      - http://localhost:9200
+  elasticsearch_url: http://localhost:9200
   sites:
     - http://vg.no
     - http://www.dagbladet.no

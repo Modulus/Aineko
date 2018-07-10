@@ -1,3 +1,5 @@
+import os
+
 from core.config_reader import read
 import logging
 
@@ -18,5 +20,13 @@ class Config:
         self.article_fields = ["authors", "canonical_link", "metadata", "meta_description",
                                "link_hash", "keywords", "meta_img", "meta_keywords", "meta_lang", "movies",
                                "publish_date", "source_url", "summary", "tags", "text", "title", "top_image", "url"]
+
+        elasticsearch_url = os.environ["ELASTICSEARCH_URL"]
+        if elasticsearch_url:
+            self.elasticsearch_url = elasticsearch_url
+        else:
+            self.elasticsearch_url = data["elasticsearch_url"]
+
+        logger.info("Using elasticsearch at {}".format(self.elasticsearch_url))
 
         logger.info("Finished creating config object")
