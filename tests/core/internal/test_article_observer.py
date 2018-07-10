@@ -4,7 +4,7 @@ import pytest
 from rx import Observable
 
 from core.config import Config
-from core.internal.articles_observer import ArticlesObserver
+from core.internal.papers_observer import PapersObserver
 
 
 @pytest.fixture
@@ -21,4 +21,4 @@ def test_stuff():
 
     source = Observable.from_(config.urls)
 
-    source.subscribe(ArticlesObserver())
+    source.subscribe(PapersObserver())
