@@ -34,7 +34,7 @@ def run():
         sites = np.array_split(all_sites, cpu_count)
         source = Observable.from_(sites)
 
-        source.subscribe(SitesObserver())
+        source.subscribe(SitesObserver(config.elasticsearch_url))
 
         end_time = time.time()
         logging.info("Started at: %s, ended at: %s, duration: %s", start_time, end_time, end_time - start_time)
@@ -46,9 +46,7 @@ if __name__ == "__main__":
     # Run before first interval ( or else you would have to wait x minutes for it to run...)
     run()
 
-    minutes = 20
+    minutes = 60
     ms = minutes * 60 * 1000
 
     rx.Observable.interval(ms).to_blocking().for_each(lambda x, y: run())
-
-

@@ -45,6 +45,8 @@ services:
     build: .
     environment:
       ELASTICSEARCH_URL: http://elasticsearch:9200
+    networks:
+      - aineko_network
   #redis:
   #  image: redis:3.2.11
   #  container_name: aineko_redis

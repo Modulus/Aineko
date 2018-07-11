@@ -12,6 +12,9 @@ threads_per_source = 1
 
 class SitesObserver(Observer):
 
+    def __init__(self, elasticsearch_url):
+        self.elasticsearch_url = elasticsearch_url
+
     def on_next(self, sites):
         print("Received {0}".format(sites))
         papers = []
@@ -28,7 +31,7 @@ class SitesObserver(Observer):
 
         source = Observable.from_(papers)
 
-        source.subscribe(PapersObserver())
+        source.subscribe(PapersObserver(elasticsearch_url=self.elasticsearch_url))
 
     def on_completed(self):
         print("Done!")

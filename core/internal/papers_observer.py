@@ -10,9 +10,12 @@ logger = logging.getLogger("PapersObserver")
 
 
 class PapersObserver(Observer):
+    def __init__(self, elasticsearch_url):
+        self.elasticsearch_url = elasticsearch_url
 
     def on_next(self, paper):
-        client = Elasticsearch()
+        logger.info("Connecting to elasticsearch at {}".format(self.elasticsearch_url))
+        client = Elasticsearch([self.elasticsearch_url], sniff_on_start=True)
         logger.debug("Parsing articles from paper {}".format(paper.url))
         for article in paper.articles:
             logger.debug("Parsing article {}".format(article.url))
@@ -36,4 +39,3 @@ class PapersObserver(Observer):
 
     def on_error(self, error):
         logger.info("Error Occurred: {0}".format(error))
-

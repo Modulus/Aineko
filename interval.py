@@ -38,7 +38,9 @@ if __name__ == '__main__':
     #         .subscribe(lambda s: executor.submit(print, s))
 
 
-    rx.Observable.interval(500).to_blocking().for_each(lambda x: print(x))
+    minutes = 1
+    ms = minutes * 60 * 1000
+    rx.Observable.interval(ms).to_blocking().for_each(lambda x: print(x))
 
    # input("jadda")
     #while True:
