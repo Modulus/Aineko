@@ -21,11 +21,7 @@ podTemplate(label: label, containers : [
         //}
         stage("Build container"){
             container("docker"){
-                sh "echo 'aineko:${env.BRANCH_NAME}${env.GIT_COMMIT }'"
-                def fullCommit = env['GIT_COMMIT']
-                def shortCommit = fullCommit[0..6]
-                sh "echo 'full commit is: ${fullCommit}'"
-                sh "echo 'short commit is: ${shortCommit}'"
+                sh "echo 'aineko:${env.BRANCH_NAME}${scmVars.GIT_COMMIT }'"
                // sh "docker build --name aineko ."
             }
         }
