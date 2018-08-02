@@ -2,7 +2,7 @@
 def label = "mypod-${UUID.randomUUID().toString()}"
 podTemplate(label: label, containers : [
     containerTemplate( name: "builder", image: "ubuntu:16.04", ttyEnabled: true),
-    containerTemplate( name "docker", image: "docker", command: "cat", ttyEnabled: true)
+    containerTemplate( name: "docker", image: "docker", command: "cat", ttyEnabled: true)
     ],
     volumes: [hostPathVolume(hostPath: '/var/run/docker.sock', mountPath: '/var/run/docker.sock')]) {
     node(label) {
