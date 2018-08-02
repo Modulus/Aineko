@@ -6,7 +6,9 @@ podTemplate(label: label, containers : [
     ],
     volumes: [hostPathVolume(hostPath: '/var/run/docker.sock', mountPath: '/var/run/docker.sock')]) {
     node(label) {
-        checkout scm
+        def scmVars = checkout scm
+        def gitCommit = env['GIT_COMMIT']
+        def shortGitCommit = gitCommit[0..6]
        // stage('Run tests') {
          //   container("builder"){
            //     sh "echo 'Install packages'"
@@ -21,7 +23,10 @@ podTemplate(label: label, containers : [
         //}
         stage("Build container"){
             container("docker"){
-                sh "echo 'aineko:${env.BRANCH_NAME}${scmVars.GIT_COMMIT }'"
+                sh "echo 'aineko:1.${env.BRANCH_NAME}-${scmVars.GIT_COMMIT }'"
+                sh "echo 'git commit: ${gitCommit}'
+                sh "echo 'git shortCommit: ${shortGitCommit}'
+
                // sh "docker build --name aineko ."
             }
         }
