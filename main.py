@@ -1,36 +1,52 @@
-from core import config_reader
-from core import article_reader
-from core import extractor
 import hashlib
 import logging
-import yaml
-from core.config_reader import read
-from core import article_reader
 import multiprocessing
-import nltk
-import concurrent.futures
-import rx
 import time
-from rx.core import blockingobservable
-import logging
-import sys
+
+import rx
+from rx import Observable
+import numpy as np
+import os
+
+from core import article_reader
+from core import extractor
+from core.config import Config
+from core.internal.sites_observer import SitesObserver
+
+FORMAT = "%(asctime)-15s - %(levelname)s:%(name)s:%(message)s"
+logging.basicConfig(level=logging.INFO, format=FORMAT)
+
+logger = logging.getLogger("Main")
+
+config = Config("config/sites.yaml")
+
+def run():
 
 
-logging.basicConfig(level=logging.INFO)
+    logger.info("Collecting articles using threads")
+    start_time = time.time()
 
-def do_work():
-    logging.info("Collecting articles using threads")
-    articles = article_reader.collect_articles_pool()
-    for article in articles:
-        curr_article = extractor.to_dict(article)
-        curr_article.hash = hashlib.sha256(article.text)
+    all_sites = config.urls
+    cpu_count = multiprocessing.cpu_count()
+    if len(all_sites) > cpu_count:
+        logger.info("Collecting large amount of articles")
+        logger.info("Chucking pages to scrape into lists of {} elements".format(cpu_count))
+        sites = np.array_split(all_sites, cpu_count)
+        source = Observable.from_(sites)
 
-    logging.info("Done deal!")
+        source.subscribe(SitesObserver(config.elasticsearch_url))
+
+        end_time = time.time()
+        logging.info("Started at: %s, ended at: %s, duration: %s", start_time, end_time, end_time - start_time)
 
 
 if __name__ == "__main__":
-    logging.info("Starting shit")
-    rx.Observable.interval(500).to_blocking().for_each(lambda x: do_work())
+    logger.info("Starting shit")
 
+    # Run before first interval ( or else you would have to wait x minutes for it to run...)
+    run()
 
+    minutes = 60
+    ms = minutes * 60 * 1000
 
+    rx.Observable.interval(ms).to_blocking().for_each(lambda x, y: run())

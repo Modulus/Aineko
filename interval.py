@@ -37,10 +37,10 @@ if __name__ == '__main__':
     #     rx.Observable.interval(200) \
     #         .subscribe(lambda s: executor.submit(print, s))
 
-    #rx.Observable.interval(20).to_blocking().last(lambda x : print(x))#
-    rx.Observable.take_last_with_time(200).to_blocking().for_each(lambda x : print(x))
-    #rx.Observable.interval(500).to_blocking().subscribe(on_next=lambda i: print("PROCESS 2: {1}".format(i)),
-     #                                                   on_error=lambda e: print(e), on_completed=lambda: print("PROCESS done!"))
+
+    minutes = 1
+    ms = minutes * 60 * 1000
+    rx.Observable.interval(ms).to_blocking().for_each(lambda x: print(x))
 
    # input("jadda")
     #while True:

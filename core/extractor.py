@@ -1,4 +1,7 @@
+import logging
 
+logger = logging.getLogger("Extractor"
+                           "")
 
 def convert(data):
     """
@@ -31,7 +34,16 @@ def extract_articles(articles, keywords):
 
 def to_dict(article, *args):
     if args:
-        data = {key: value for key, value in article.__dict__.items() if key in args and value}
+        data = {key: convert_value(value) for key, value in article.__dict__.items() if key in args and value }
         return data
     else:
         return dict(filter(lambda prop : prop in args, article.__dict__.items()))
+
+
+def convert_value(value):
+    if type(value) is set:
+        logger.debug("Converting set to list")
+        return list(value)
+    else:
+        logger.debug("Conversion not necessary, returning as is")
+        return value
