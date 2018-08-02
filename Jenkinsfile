@@ -21,8 +21,8 @@ podTemplate(label: label, containers : [
         //}
         stage("Build container"){
             container("docker"){
-                sh "echo ${scm.GIT_COMMIT}"
-                sh "echo 'aineko:1.${env.BRANCH_NAME}-${scmVars.GIT_COMMIT }'"
+                sh "echo ${env.GIT_COMMIT}"
+                sh "echo 'aineko:1.${env.BRANCH_NAME}-${env.GIT_COMMIT }'"
                 sh "echo 'git commit: ${gitCommit}'"
                 sh "echo 'git shortCommit: ${shortGitCommit}'"
 
