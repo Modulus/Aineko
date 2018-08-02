@@ -13,7 +13,7 @@ jieba3k==0.35.1
 Jinja2==2.9.6
 lxml==3.8.0
 MarkupSafe==1.0
-newspaper3k==0.2.2
+#newspaper3k==0.2.2
 nltk==3.2.4
 olefile==0.44
 Pillow==4.2.1

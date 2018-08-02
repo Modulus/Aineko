@@ -1,20 +1,9 @@
-pipeline {
-    agent {
-      docker { image "python:3.7.0-slim"}
-    }
-    stages {
-        stage('Test') {
-            steps {
-                echo 'Running tests'
-                sh "pip install -r requirements.txt"
-                sh "cd tests && pytest ."
-            }
-        }
-        stage("Build"){
-          steps {
-            echo "hallais!"
-            sh "ls -la"
-          }
+// this guarantees the node will use this template
+def label = "mypod-${UUID.randomUUID().toString()}"
+podTemplate(label: label) {
+    node(label) {
+        stage('Run shell') {
+            sh 'echo hello world'
         }
     }
 }
