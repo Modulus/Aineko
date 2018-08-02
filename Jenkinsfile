@@ -21,7 +21,7 @@ podTemplate(label: label, containers : [
         }
         stage("Build container"){
             container("docker"){
-                sh "ls -la"
+                sh "docker build --name aineko ."
             }
         }
 
