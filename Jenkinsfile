@@ -8,6 +8,8 @@ podTemplate(label: label, containers : [
     node(label) {
         stage('Run tests') {
             container("builder"){
+                checkout scm
+
                 sh "echo 'Install packages'"
                 sh "apt update && apt install -y python3 python3-pip"
                 sh "echo 'Installing requirements for python project'"
