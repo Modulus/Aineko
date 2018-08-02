@@ -21,7 +21,8 @@ podTemplate(label: label, containers : [
         }
         stage("Build container"){
             container("docker"){
-                sh "docker build --name aineko ."
+                sh "Building aineko:${env.BRANCH_NAME}${env.TAG_NAME}"
+               // sh "docker build --name aineko ."
             }
         }
 
