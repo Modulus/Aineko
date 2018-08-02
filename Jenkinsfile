@@ -19,6 +19,14 @@ podTemplate(label: label, containers : [
                 //sh "echo 'DONE!'"
             //}
         //}
+        stage("Run tests"){
+            container("docker){
+                sh "docker build --tag aineko_test:1.${env.BUILD_NUMBER}-${env.BRANCH_NAME} --file Dockerfile.tests"
+                sh "docker run --name aineko_test:1.${env.BUILD_NUMBER}-${env.BRANCH_NAME} aineko_test:1.${env.BUILD_NUMBER}-${env.BRANCH_NAME}"
+                sh "docker rm -f aineko_test:1.${env.BUILD_NUMBER}-${env.BRANCH_NAME}"
+                sh "docker rmi -f aineko_test:1.${env.BUILD_NUMBER}-${env.BRANCH_NAME}"
+            }
+        }
         stage("Build container"){
             container("docker"){
                 sh "echo 'building docker image coderpews/aineko:1.coderpews/aineko:1.${env.BUILD_NUMBER }-${env.BRANCH_NAME}'"
