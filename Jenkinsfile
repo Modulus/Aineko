@@ -5,11 +5,14 @@ podTemplate(label: label, containers : [
     ]) {
     node(label) {
         stage('Run tests') {
-            sh "echo 'Installing requirements'"
-            sh "pip install -r requirements.txt"
-            sh "echo 'Running tests'"
-            sh "cd tests && pytest ."
-            sh "echo 'DONE!'"
+            container("python"){
+                sh "echo 'Installing requirements'"
+                sh "pip install -r requirements.txt"
+                sh "echo 'Running tests'"
+                sh "cd tests && pytest ."
+                sh "echo 'DONE!'"
+            }
+
         }
 
     }
