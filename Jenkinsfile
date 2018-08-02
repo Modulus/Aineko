@@ -6,7 +6,7 @@ podTemplate(label: label, containers : [
     ],
     volumes: [hostPathVolume(hostPath: '/var/run/docker.sock', mountPath: '/var/run/docker.sock')]) {
     node(label) {
-       checkout git
+       checkout scm
        // stage('Run tests') {
          //   container("builder"){
            //     sh "echo 'Install packages'"
@@ -21,7 +21,7 @@ podTemplate(label: label, containers : [
         //}
         stage("Build container"){
             container("docker"){
-                sh "echo 'aineko:1.${env.BRANCH_NAME}-${env.COMMIT }'"
+                sh "echo 'aineko:1.${env.BRANCH_NAME}-${env.BUILD_NUMBER }'"
 
                // sh "docker build --name aineko ."
             }
