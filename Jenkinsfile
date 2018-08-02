@@ -1,7 +1,7 @@
 // this guarantees the node will use this template
 def label = "mypod-${UUID.randomUUID().toString()}"
 podTemplate(label: label, containers : [
-    containerTemplate( name: "python", image: "python:3.7.0-slim", ttyEnabled: true, command: "cat)
+    containerTemplate( name: "python", image: "python:3.7.0-slim", ttyEnabled: true, command: "cat")
     ]) {
     node(label) {
         stage('Run tests') {
