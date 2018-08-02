@@ -6,19 +6,19 @@ podTemplate(label: label, containers : [
     ],
     volumes: [hostPathVolume(hostPath: '/var/run/docker.sock', mountPath: '/var/run/docker.sock')]) {
     node(label) {
-        stage('Run tests') {
-            checkout scm
-            container("builder"){
-                sh "echo 'Install packages'"
-                sh "apt update && apt install -y python3 python3-pip"
-                sh "echo 'Installing requirements for python project'"
-                sh "ls -la"
-                sh "pip3 install -r requirements.txt"
-                sh "echo 'Running tests'"
+        checkout scm
+       // stage('Run tests') {
+         //   container("builder"){
+           //     sh "echo 'Install packages'"
+             //   sh "apt update && apt install -y python3 python3-pip"
+               // sh "echo 'Installing requirements for python project'"
+               // sh "ls -la"
+                //sh "pip3 install -r requirements.txt"
+                //sh "echo 'Running tests'"
                 //sh "cd tests && pytest ."
-                sh "echo 'DONE!'"
-            }
-        }
+                //sh "echo 'DONE!'"
+            //}
+        //}
         stage("Build container"){
             container("docker"){
                 sh "Building aineko:${env.BRANCH_NAME}${env.TAG_NAME}"
