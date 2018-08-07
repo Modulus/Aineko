@@ -31,7 +31,7 @@ podTemplate(label: label, containers : [
                     passwordVariable: 'PASSWORD']]){
                         sh "echo 'branch: ${gitBranch}'"
                         sh "echo 'commit: ${gitCommit}'"
-                        sh "echo 'version: ${versionNumber}
+                        sh "echo 'version: ${versionNumber}'"
                         sh "docker login -u ${USER} -p ${PASSWORD} --password-stdin"
                         sh "echo 'building docker image coderpews/aineko:1.coderpews/aineko:1.${env.versionNumber }-${env.BRANCH_NAME}'"
                         sh "docker build --tag rubblesnask/aineko:1.${env.versionNumber }-${env.BRANCH_NAME} ."
