@@ -27,8 +27,8 @@ podTemplate(label: label, containers : [
             container("docker"){
                 withCredentials([usernamePassword(
                     credentialsId: 'dockerhub',
-                    usernameVariable: 'DOCKER_USER',
-                    passwordVariable: 'DOCKER_PASSWORD')]){
+                    passwordVariable: 'DOCKER_PASSWORD',
+                    usernameVariable: 'DOCKER_USER')]){
                         sh """
                         echo 'branch: ${gitBranch}'
                         echo 'commit: ${gitCommit}'
