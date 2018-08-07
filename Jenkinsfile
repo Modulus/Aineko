@@ -9,6 +9,7 @@ podTemplate(label: label, containers : [
        def repo = checkout scm
        def gitCommit = repo.GIT_COMMIT
        def gitBranch = repo.GIT_BRANCH
+       def versionNumber = gitCommit.substring(0,6)
        // stage('Run tests') {
          //   container("builder"){
            //     sh "echo 'Install packages'"
@@ -28,11 +29,12 @@ podTemplate(label: label, containers : [
                     credentialsId: 'dockerhub',
                     usernameVariable: 'USER',
                     passwordVariable: 'PASSWORD']]){
-                        sh "echo 'branch: ${gitCommit}'"
-                        sh "echo 'commit: ${gitBranch}'"
-                        sh "docker login -u ${USER} -p ${PASSWORD}"
-                        sh "echo 'building docker image coderpews/aineko:1.coderpews/aineko:1.${env.BUILD_NUMBER }-${env.BRANCH_NAME}'"
-                        sh "docker build --tag rubblesnask/aineko:1.${env.BUILD_NUMBER }-${env.BRANCH_NAME} ."
+                        sh "echo 'branch: ${gitBranch}'"
+                        sh "echo 'commit: ${gitCommit}'"
+                        sh "echo 'version: ${versionNumber}
+                        sh "docker login -u ${USER} -p ${PASSWORD} --password-stdin"
+                        sh "echo 'building docker image coderpews/aineko:1.coderpews/aineko:1.${env.versionNumber }-${env.BRANCH_NAME}'"
+                        sh "docker build --tag rubblesnask/aineko:1.${env.versionNumber }-${env.BRANCH_NAME} ."
                         //sh "docker push
                     }
 
