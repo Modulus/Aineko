@@ -33,10 +33,11 @@ podTemplate(label: label, containers : [
                         echo 'branch: ${gitBranch}'
                         echo 'commit: ${gitCommit}'
                         echo 'version: ${versionNumber}'
-                        docker login -u ${DOCKER_USER} -p ${DOCKER_PASSWORD}
+                        docker login -p ${DOCKER_PASSWORD} -u ${DOCKER_USER} 
                         echo 'building docker image coderpews/aineko:1.coderpews/aineko:1.${versionNumber}-${env.BRANCH_NAME}'
                         docker build --tag rubblesnask/aineko:1.${versionNumber}-${env.BRANCH_NAME} .
                         docker push rubblesnask/aineko:1.${versionNumber}-${env.BRANCH_NAME}
+                        docker logout
                         """
                     }
 
