@@ -25,7 +25,7 @@ podTemplate(label: label, containers : [
 
         stage("Build container"){
             container("docker"){
-                withCredentials([usernamePassword(,
+                withCredentials([usernamePassword(
                     credentialsId: 'dockerhub',
                     usernameVariable: 'DOCKER_USER',
                     passwordVariable: 'DOCKER_PASSWORD')]){
