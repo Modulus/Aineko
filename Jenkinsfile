@@ -9,7 +9,7 @@ podTemplate(label: label, containers : [
        def repo = checkout scm
        def gitCommit = repo.GIT_COMMIT
        def gitBranch = repo.GIT_BRANCH
-       def versionNumber = gitCommit.substring(0,6)
+       def versionNumber = gitCommit.substring(0,10)
        // stage('Run tests') {
          //   container("builder"){
            //     sh "echo 'Install packages'"
