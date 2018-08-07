@@ -25,15 +25,15 @@ podTemplate(label: label, containers : [
 
         stage("Build container"){
             container("docker"){
-                withCredentials([[$class: 'UsernamePasswordMultiBinding',
+                withCredentials([usernamePassword(,
                     credentialsId: 'dockerhub',
                     usernameVariable: 'DOCKER_USER',
-                    passwordVariable: 'DOCKER_PASSWORD']]){
+                    passwordVariable: 'DOCKER_PASSWORD')]){
                         sh """
                         echo 'branch: ${gitBranch}'
                         echo 'commit: ${gitCommit}'
                         echo 'version: ${versionNumber}'
-                        docker login -p ${DOCKER_PASSWORD} -u ${DOCKER_USER} 
+                        docker login -p ${DOCKER_PASSWORD} -u ${DOCKER_USER}
                         echo 'building docker image coderpews/aineko:1.coderpews/aineko:1.${versionNumber}-${env.BRANCH_NAME}'
                         docker build --tag rubblesnask/aineko:1.${versionNumber}-${env.BRANCH_NAME} .
                         docker push rubblesnask/aineko:1.${versionNumber}-${env.BRANCH_NAME}
