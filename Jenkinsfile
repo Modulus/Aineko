@@ -24,7 +24,7 @@ podTemplate(label: label, containers : [
 
         stage("Build container"){
             container("docker"){
-                witchCredentials([[$class: 'UsernamePasswordMultiBinding',
+                withCredentials([[$class: 'UsernamePasswordMultiBinding',
                     credentialsId: 'dockerhub',
                     usernameVariable: 'USER',
                     passwordVariable: 'PASSWORD']]){
