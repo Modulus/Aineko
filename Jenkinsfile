@@ -6,7 +6,9 @@ podTemplate(label: label, containers : [
     ],
     volumes: [hostPathVolume(hostPath: '/var/run/docker.sock', mountPath: '/var/run/docker.sock')]) {
     node(label) {
-       checkout scm
+       def repo = checkout scm
+       def gitCommit = repo.GIT_COMMIT
+       def gitBranch = repo.GIT_BRANCH
        // stage('Run tests') {
          //   container("builder"){
            //     sh "echo 'Install packages'"
@@ -22,8 +24,18 @@ podTemplate(label: label, containers : [
 
         stage("Build container"){
             container("docker"){
-                sh "echo 'building docker image coderpews/aineko:1.coderpews/aineko:1.${env.BUILD_NUMBER }-${env.BRANCH_NAME}'"
-                sh "docker build --tag coderpews/aineko:1.${env.BUILD_NUMBER }-${env.BRANCH_NAME} ."
+                witchCredentials([[$class: 'UsernamePasswordMultiBinding',
+                    credentialsId: 'dockerhub',
+                    usernameVariable: 'USER',
+                    passwordVariable: 'PASSWORD']]){
+                        sh "echo 'branch: ${gitCommit}'
+                        sh "echo 'commit: ${gitBranch}'
+                        sh "docker login -u ${USER} -p ${PASSWORD}"
+                        sh "echo 'building docker image coderpews/aineko:1.coderpews/aineko:1.${env.BUILD_NUMBER }-${env.BRANCH_NAME}'"
+                        sh "docker build --tag rubblesnask/aineko:1.${env.BUILD_NUMBER }-${env.BRANCH_NAME} ."
+                        //sh "docker push
+                    }
+
             }
         }
 
