@@ -37,7 +37,7 @@ podTemplate(label: label, containers : [
 
                         echo 'building docker image coderpews/aineko:1.coderpews/aineko:1.${versionNumber}-${env.BRANCH_NAME}'
                         docker build --tag rubblesnask/aineko:1.${versionNumber}-${env.BRANCH_NAME} .
-                        sh docker push
+                        docker push
                         """
                     }
 
