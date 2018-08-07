@@ -27,12 +27,14 @@ podTemplate(label: label, containers : [
             container("docker"){
                 withCredentials([[$class: 'UsernamePasswordMultiBinding',
                     credentialsId: 'dockerhub',
-                    usernameVariable: 'USER',
-                    passwordVariable: 'PASSWORD']]){
+                    usernameVariable: 'DOCKER_USER',
+                    passwordVariable: 'DOCKER_PASSWORD']]){
                         sh "echo 'branch: ${gitBranch}'"
                         sh "echo 'commit: ${gitCommit}'"
                         sh "echo 'version: ${versionNumber}'"
-                        sh "docker login -u ${USER} -p ${PASSWORD} --password-stdin"
+                        set +x
+                        sh "docker login -u ${DOCKER_USER} -p ${DOCKER_PASSWORD}"
+                        set -x
                         sh "echo 'building docker image coderpews/aineko:1.coderpews/aineko:1.${env.versionNumber }-${env.BRANCH_NAME}'"
                         sh "docker build --tag rubblesnask/aineko:1.${env.versionNumber }-${env.BRANCH_NAME} ."
                         //sh "docker push
