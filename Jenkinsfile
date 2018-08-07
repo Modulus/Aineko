@@ -32,9 +32,7 @@ podTemplate(label: label, containers : [
                         sh "echo 'branch: ${gitBranch}'"
                         sh "echo 'commit: ${gitCommit}'"
                         sh "echo 'version: ${versionNumber}'"
-                        set +x
                         sh "docker login -u ${DOCKER_USER} -p ${DOCKER_PASSWORD}"
-                        set -x
                         sh "echo 'building docker image coderpews/aineko:1.coderpews/aineko:1.${env.versionNumber }-${env.BRANCH_NAME}'"
                         sh "docker build --tag rubblesnask/aineko:1.${env.versionNumber }-${env.BRANCH_NAME} ."
                         //sh "docker push
