@@ -28,8 +28,8 @@ podTemplate(label: label, containers : [
                     credentialsId: 'dockerhub',
                     usernameVariable: 'USER',
                     passwordVariable: 'PASSWORD']]){
-                        sh "echo 'branch: ${gitCommit}'
-                        sh "echo 'commit: ${gitBranch}'
+                        sh "echo 'branch: ${gitCommit}'"
+                        sh "echo 'commit: ${gitBranch}'"
                         sh "docker login -u ${USER} -p ${PASSWORD}"
                         sh "echo 'building docker image coderpews/aineko:1.coderpews/aineko:1.${env.BUILD_NUMBER }-${env.BRANCH_NAME}'"
                         sh "docker build --tag rubblesnask/aineko:1.${env.BUILD_NUMBER }-${env.BRANCH_NAME} ."
