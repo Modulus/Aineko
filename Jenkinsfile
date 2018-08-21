@@ -25,7 +25,7 @@ podTemplate(label: label, containers : [
 
         stage("Build container"){
             container("docker"){
-                docker.withRegistry("https://tv2norge-docker-test-local.jfrog.io", "artifactory"){
+                docker.withRegistry("", "dockerhub"){
                     def builtImage = docker.build("coderpews/aineko:1.coderpews/aineko:1.${versionNumber}-${env.BRANCH_NAME}")   
                     builtImage.push()
                 }
