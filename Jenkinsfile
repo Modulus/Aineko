@@ -14,7 +14,7 @@ podTemplate(label: label, containers : [
          //   container("builder"){
            //     sh "echo 'Install packages'"
              //   sh "apt update && apt install -y python3 python3-pip"
-               // sh "echo 'Installing requirements for python project'"
+               // sh "echo 'Installing requirements for python project'"e
                // sh "ls -la"
                 //sh "pip3 install -r requirements.txt"
                 //sh "echo 'Running tests'"
@@ -25,23 +25,13 @@ podTemplate(label: label, containers : [
 
         stage("Build container"){
             container("docker"){
-                withCredentials([usernamePassword(
-                    credentialsId: 'dockerhub',
-                    passwordVariable: 'DOCKER_PASSWORD',
-                    usernameVariable: 'DOCKER_USER')]){
-                        sh """
-                        echo 'branch: ${gitBranch}'
-                        echo 'commit: ${gitCommit}'
-                        echo 'version: ${versionNumber}'
-                        docker login -p ${DOCKER_PASSWORD} -u ${DOCKER_USER}
-                        echo 'building docker image coderpews/aineko:1.coderpews/aineko:1.${versionNumber}-${env.BRANCH_NAME}'
-                        docker build --tag rubblesnask/aineko:1.${versionNumber}-${env.BRANCH_NAME} .
-                        docker push rubblesnask/aineko:1.${versionNumber}-${env.BRANCH_NAME}
-                        docker logout
-                        """
-                    }
-
+                docker.withRegistry("https://tv2norge-docker-test-local.jfrog.io", "artifactory"){
+                    def builtImage = docker.build("coderpews/aineko:1.coderpews/aineko:1.${versionNumber}-${env.BRANCH_NAME}")   
+                    builtImage.push()
+                }
+              
             }
+
         }
 
     }
