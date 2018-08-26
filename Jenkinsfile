@@ -26,7 +26,7 @@ podTemplate(label: label, containers : [
         stage("Build container"){
             container("docker"){
                 docker.withRegistry("", "dockerhub"){
-                    def builtImage = docker.build("coderpews/aineko:1.coderpews/aineko:1.${versionNumber}-${env.BRANCH_NAME}")   
+                    def builtImage = docker.build("rubblesnask/aineko:1.${versionNumber}-${env.BRANCH_NAME}")
                     builtImage.push()
                 }
               
