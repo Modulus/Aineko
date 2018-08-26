@@ -1,7 +1,7 @@
 // this guarantees the node will use this template
 def label = "mypod-${UUID.randomUUID().toString()}"
 podTemplate(label: label, containers : [
-    containerTemplate( name: "builder", image: "ubuntu:16.04", ttyEnabled: true),
+    containerTemplate( name: "builder", image: "ubuntu:18.04", ttyEnabled: true),
     containerTemplate( name: "docker", image: "docker", command: "cat", ttyEnabled: true)
     ],
     volumes: [hostPathVolume(hostPath: '/var/run/docker.sock', mountPath: '/var/run/docker.sock')]) {
@@ -18,10 +18,13 @@ podTemplate(label: label, containers : [
                 sh "ls -la"
                 sh "pip3 install -r requirements.txt"
                 sh "echo 'Running tests'"
-                sh "cd tests && pytest . --junit-xml=`pwd`/rubblesnask_aineko_1.${versionNumber}-${env.BRANCH_NAME}"
+                sh "cd tests && pytest . --junit-xml=`pwd`/rubblesnask_aineko_1.${versionNumber}-${env.BRANCH_NAME}-report.xml"
                 sh "echo 'DONE!'"
             }
         }
+        stage("Junit reports"){
+            junit '*report.xml'
+         }
 
         stage("Build container"){
             container("docker"){
@@ -29,12 +32,7 @@ podTemplate(label: label, containers : [
                     def builtImage = docker.build("rubblesnask/aineko:1.${versionNumber}-${env.BRANCH_NAME}")
                     builtImage.push()
                 }
-              
             }
-
-        }
-        stage("Junit reports"){
-            junit '*report.xml'
         }
     }
 }
