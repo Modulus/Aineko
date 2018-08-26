@@ -1,0 +1,33 @@
+---
+  sites:
+    - http://vg.no
+    - http://www.dagbladet.no
+    - http://www.nrk.no
+    - http://www.ba.no
+    - http://bt.no
+    - http://www.dn.no
+    - http://e24.no
+    - http://tek.no
+    - http://hardware.no
+    - http://itavisen.no
+    - http://cw.no
+    - http://cnn.no
+    - http://reuters.com
+    - http://www.morningstar.com
+    - https://www.bloomberg.com
+    - http://money.cnn.com/
+  tags:
+    - war
+    - explosion
+    - ai
+    - artificial intelligence
+    - stocks
+    - stockmarket
+    - stock
+    - microsoft
+    - apple
+    - cpu
+    - nvidia
+    - amd
+    - tech
+    - technology
