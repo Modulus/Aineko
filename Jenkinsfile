@@ -25,24 +25,14 @@ podTemplate(label: label, containers : [
 
         stage("Build container"){
             container("docker"){
-                withCredentials([usernamePassword(
-                    credentialsId: 'dockerhub',
-                    passwordVariable: 'DOCKER_PASSWORD',
-                    usernameVariable: 'DOCKER_USER')]){
-                        sh """
-                        echo 'branch: ${gitBranch}'
-                        echo 'commit: ${gitCommit}'
-                        echo 'version: ${versionNumber}'
-                        docker login -p ${DOCKER_PASSWORD} -u ${DOCKER_USER}
-                        echo 'building docker image coderpews/aineko:1.coderpews/aineko:1.${versionNumber}-${env.BRANCH_NAME}'
-                        docker build --tag rubblesnask/aineko:1.${versionNumber}-${env.BRANCH_NAME} .
-                        docker push rubblesnask/aineko:1.${versionNumber}-${env.BRANCH_NAME}
-                        docker logout
-                        """
-                    }
+            docker.withRegistry("", "dockerhub"){
+                def builtImage = docker.build(" coderpews/aineko:1.coderpews/aineko:1.${versionNumber}-${env.BRANCH_NAME}")
+                builtImage.push()
 
             }
         }
-
+        stage("Junit reports"){
+            junit '*report.xml'
+        }
     }
 }
