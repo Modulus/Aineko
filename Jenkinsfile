@@ -14,7 +14,7 @@ podTemplate(label: label, containers : [
          //   container("builder"){
            //     sh "echo 'Install packages'"
              //   sh "apt update && apt install -y python3 python3-pip"
-               // sh "echo 'Installing requirements for python project'"
+               // sh "echo 'Installing requirements for python project'"e
                // sh "ls -la"
                 //sh "pip3 install -r requirements.txt"
                 //sh "echo 'Running tests'"
@@ -25,11 +25,13 @@ podTemplate(label: label, containers : [
 
         stage("Build container"){
             container("docker"){
-            docker.withRegistry("", "dockerhub"){
-                def builtImage = docker.build(" coderpews/aineko:1.coderpews/aineko:1.${versionNumber}-${env.BRANCH_NAME}")
-                builtImage.push()
-
+                docker.withRegistry("https://registry.hub.docker.com", "dockerhub"){
+                    def builtImage = docker.build("rubblesnask/aineko:1.${versionNumber}-${env.BRANCH_NAME}")
+                    builtImage.push()
+                }
+              
             }
+
         }
         stage("Junit reports"){
             junit '*report.xml'

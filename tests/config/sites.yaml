@@ -10,3 +10,5 @@
     - ai
     - artificial intelligence
     - stocks
+  redis:
+    url: redis
