@@ -14,7 +14,7 @@ podTemplate(label: label, containers : [
             container("builder"){
                 sh "echo 'Install packages'"
                 sh "apt update && apt install -y python3 python3-pip"
-                sh "echo 'Installing requirements for python project'"e
+                sh "echo 'Installing requirements for python project'"
                 sh "ls -la"
                 sh "pip3 install -r requirements.txt"
                 sh "echo 'Running tests'"
