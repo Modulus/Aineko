@@ -1,15 +1,15 @@
 // this guarantees the node will use this template
 def label = "mypod-${UUID.randomUUID().toString()}"
 podTemplate(label: label, containers : [
-    containerTemplate( name: "builder", image: "ubuntu:18.04", ttyEnabled: true),
+    containerTemplate( name: "builder", image: "ubuntu:18.04", ttyEnabled: true,
+        envVars: [
+            envVar(key: "ELASTICSEARCH_UR", value: "localhost:9200")
+         ]),
     containerTemplate( name: "docker", image: "docker", command: "cat", ttyEnabled: true)
     ],
     volumes: [hostPathVolume(hostPath: '/var/run/docker.sock', mountPath: '/var/run/docker.sock')]) {
 
     node(label) {
-        environment {
-            ELASTICSEARCH_URL = "localhost:9200"
-        }
        def repo = checkout scm
        def gitCommit = repo.GIT_COMMIT
        def gitBranch = repo.GIT_BRANCH
