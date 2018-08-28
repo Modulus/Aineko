@@ -3,7 +3,7 @@ def label = "mypod-${UUID.randomUUID().toString()}"
 podTemplate(label: label, containers : [
     containerTemplate( name: "builder", image: "ubuntu:18.04", ttyEnabled: true,
         envVars: [
-            envVar(key: "ELASTICSEARCH_UR", value: "localhost:9200")
+            envVar(key: "ELASTICSEARCH_URL", value: "localhost:9200")
          ]),
     containerTemplate( name: "docker", image: "docker", command: "cat", ttyEnabled: true)
     ],
