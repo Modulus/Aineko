@@ -21,4 +21,4 @@ def test_stuff():
 
     source = Observable.from_(config.urls)
 
-    source.subscribe(PapersObserver())
+    source.subscribe(PapersObserver("localhost:9200"))
