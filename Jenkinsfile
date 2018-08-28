@@ -27,7 +27,7 @@ podTemplate(label: label, containers : [
             }
         }
         stage("Junit reports"){
-            junit '*report.xml'
+            junit 'tests/*report.xml'
          }
 
         stage("Build container"){
