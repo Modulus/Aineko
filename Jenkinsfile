@@ -1,7 +1,7 @@
 // this guarantees the node will use this template
 def label = "mypod-${UUID.randomUUID().toString()}"
 podTemplate(label: label, containers : [
-    containerTemplate( name: "builder", image: "ubuntu:18.04", ttyEnabled: true,
+    containerTemplate( name: "builder", image: "rubblesnask/ubuntu_python3_pip3:18.04.1", ttyEnabled: true,
         envVars: [
             envVar(key: "ELASTICSEARCH_URL", value: "localhost:9200")
          ]),
