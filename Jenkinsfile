@@ -5,10 +5,11 @@ podTemplate(label: label, containers : [
     containerTemplate( name: "docker", image: "docker", command: "cat", ttyEnabled: true)
     ],
     volumes: [hostPathVolume(hostPath: '/var/run/docker.sock', mountPath: '/var/run/docker.sock')]) {
-    environment {
-        ELASTICSEARCH_URL = "localhost:9200"
-    }
+
     node(label) {
+        environment {
+            ELASTICSEARCH_URL = "localhost:9200"
+        }
        def repo = checkout scm
        def gitCommit = repo.GIT_COMMIT
        def gitBranch = repo.GIT_BRANCH
