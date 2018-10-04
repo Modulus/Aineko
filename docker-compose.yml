@@ -47,15 +47,15 @@ services:
       - "6379:6379"
     networks:
       - aineko_network
-  postgres:
-    image: postgres:9.4-alpine
-    container_name: aineko_postgres
-    networks:
-      - aineko_network
-    environment:
-      POSTGRES_PASSWORD: neverever
-    ports:
-      - "5432:5432"
+ # postgres:
+ #   image: postgres:9.4-alpine
+ #   container_name: aineko_postgres
+ #   networks:
+ #     - aineko_network
+ #   environment:
+ #     POSTGRES_PASSWORD: neverever
+ #   ports:
+ #     - "5432:5432"
 networks:
   aineko_network:
     driver: bridge

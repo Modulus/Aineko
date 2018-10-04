@@ -1,0 +1,28 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: aineko-deployment
+  labels:
+    app: aineko
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: aineko
+  template:
+    metadata:
+      labels:
+        app: aineko
+    spec:
+      containers:
+      - name: aineko
+        image: rubblesnask/aineko:1.f174b1aa28-master
+        env: 
+          - name: ELASTICSEARCH_URL
+            value: elasticsearch-client:9200
+
+
+
+
+
+

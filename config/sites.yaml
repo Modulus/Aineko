@@ -1,5 +1,5 @@
 ---
-  elasticsearch_url: http://localhost:9200
+  elasticsearch_url: http://elasticsearch-client:9200
   scrape_interval_minutes: 60
   sites:
     - http://vg.no
