@@ -16,7 +16,7 @@ spec:
     spec:
       containers:
       - name: aineko
-        image: rubblesnask/aineko:1.f174b1aa28-master
+        image: rubblesnask/aineko:1.65d5b3a16a-master
         env: 
           - name: ELASTICSEARCH_URL
             value: elasticsearch-client:9200
