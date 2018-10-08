@@ -17,8 +17,8 @@ logger = logging.getLogger("Main")
 
 config = Config("config/sites.yaml")
 
-def run():
 
+def run():
 
     logger.info("Collecting articles using threads")
     start_time = time.time()
