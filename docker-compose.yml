@@ -32,21 +32,21 @@ services:
         - "5601:5601"
       networks:
         - aineko_network
-  aineko:
-    depends_on:
-      - elasticsearch
-    build: .
-    environment:
-      ELASTICSEARCH_URL: http://elasticsearch:9200
-    networks:
-      - aineko_network
-  redis:
-    image: redis:4.0.11-alpine
-    container_name: aineko_redis
-    ports:
-      - "6379:6379"
-    networks:
-      - aineko_network
+  #aineko:
+  #  depends_on:
+  #    - elasticsearch
+  #  build: .
+  #  environment:
+  #    ELASTICSEARCH_URL: http://elasticsearch:9200
+  #  networks:
+  #    - aineko_network
+  #redis:
+  #  image: redis:4.0.11-alpine
+  #  container_name: aineko_redis
+  #  ports:
+  #    - "6379:6379"
+  #  networks:
+  #    - aineko_network
  # postgres:
  #   image: postgres:9.4-alpine
  #   container_name: aineko_postgres

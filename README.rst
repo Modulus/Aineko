@@ -18,3 +18,8 @@ Install on *nix/mac
 1. Create healthcheck that checks connection to elasticsearch
 2. implement rest service to store/fetch urls
 3. Create healthcheck to verify connection to rest services as well
+
+## Extras
+1. Setup postgresql with helm
+2. Setup sonarqube with helm using db from step 1
+3. Create sonarqube quality gate
