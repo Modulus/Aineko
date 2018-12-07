@@ -1,15 +1,12 @@
-import hashlib
 import logging
 import multiprocessing
 import time
+import requests
 
+import numpy as np
 import rx
 from rx import Observable
-import numpy as np
-import os
 
-from core import article_reader
-from core import extractor
 from core.config import Config
 from core.internal.sites_observer import SitesObserver
 
@@ -20,15 +17,20 @@ logger = logging.getLogger("Main")
 
 config = Config("config/sites.yaml")
 
-def run():
 
+def run():
 
     logger.info("Collecting articles using threads")
     start_time = time.time()
 
     all_sites = config.urls
     cpu_count = multiprocessing.cpu_count()
-    if len(all_sites) > cpu_count:
+
+    url = "http://{}/_cluster/health".format(config.elasticsearch_url)
+    logger.info("Url used for elasticsearch healthcheck: {}".format(url))
+    response = requests.get('https://api.github.com/user', auth=('user', 'pass'))
+
+    if len(all_sites) > cpu_count and 200 == response.status_code:
         logger.info("Collecting large amount of articles")
         logger.info("Chucking pages to scrape into lists of {} elements".format(cpu_count))
         sites = np.array_split(all_sites, cpu_count)
@@ -38,6 +40,8 @@ def run():
 
         end_time = time.time()
         logging.info("Started at: %s, ended at: %s, duration: %s", start_time, end_time, end_time - start_time)
+    else:
+        logging.warn("Not config or elasticsearch found, skipping collection of data")
 
 
 if __name__ == "__main__":

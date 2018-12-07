@@ -1,0 +1,34 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: aineko-deployment
+  labels:
+    app: aineko
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: aineko
+  template:
+    metadata:
+      labels:
+        app: aineko
+    spec:
+      containers:
+      - name: aineko
+        image: rubblesnask/aineko:1.65d5b3a16a-master
+        env: 
+          - name: ELASTICSEARCH_URL
+            value: elasticsearch-client:9200
+        readinessProbe:
+          exec:
+            command:
+              - python
+              - health.py
+        livenessProbe:
+            exec:
+              command:
+                - python
+                - health.py
+
+

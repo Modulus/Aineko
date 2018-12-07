@@ -22,3 +22,16 @@ def test_config_reader(sites_file):
     assert config.tags is not None
     assert type(config.urls) is list
     assert type(config.tags) is list
+
+def test_config_reader_with_elasticsearch_env_varialbe(sites_file):
+
+    os.environ["ELASTICSEARCH_URL"] = "elasticsearch-client:9200"
+    config = Config(sites_file)
+
+    print(config)
+    assert config is not None
+    assert config.urls is not None
+    assert config.tags is not None
+    assert type(config.urls) is list
+    assert type(config.tags) is list
+    assert config.elasticsearch_url == "elasticsearch-client:9200"

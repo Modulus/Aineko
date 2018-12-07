@@ -3,8 +3,6 @@ services:
   elasticsearch:
     image: docker.elastic.co/elasticsearch/elasticsearch-oss:6.3.0
     container_name: anieko_elasticsearch
-   # volumes:
-    #  - docker/elastic/config/elasticsearch.yml:/usr/share/elasticsearch/config/elasticsearch.yml
     ports:
       - "9200:9200"
       - "9300:9300"
@@ -30,44 +28,34 @@ services:
       environment:
         SERVER_NAME: kibananananana
         ELASTICSEARCH_URL: http://elasticsearch:9200
-
       ports:
         - "5601:5601"
-      environment:
-        server.name: kibana
-        server.host: "0"
-        elasticsearch.url: http://elasticsearch:9200
       networks:
         - aineko_network
-  aineko:
-    depends_on:
-      - elasticsearch
-    build: .
-    environment:
-      ELASTICSEARCH_URL: http://elasticsearch:9200
-    networks:
-      - aineko_network
+  #aineko:
+  #  depends_on:
+  #    - elasticsearch
+  #  build: .
+  #  environment:
+  #    ELASTICSEARCH_URL: http://elasticsearch:9200
+  #  networks:
+  #    - aineko_network
   #redis:
-  #  image: redis:3.2.11
+  #  image: redis:4.0.11-alpine
   #  container_name: aineko_redis
-   # networks:
-   #   - aineko_network
-
-#    cassandra:
-#    image: cassandra:3.11.1
-##    ports:
-##      - "5556:7000"
-#    networks:
-#      - aineko_network
-#    labels:
-#      role: "Database"
-#      type: "Cassandra"
-#      tech: "NoSQL"
-#    container_name: aineko_cassandra
-#    environment:
-#      CASSANDRA_LISTEN_ADDRESS: "192.168.1.4"
-#      CASSANDRA_BROADCAST_ADDRESS: "192.168.1.4"
-
+  #  ports:
+  #    - "6379:6379"
+  #  networks:
+  #    - aineko_network
+ # postgres:
+ #   image: postgres:9.4-alpine
+ #   container_name: aineko_postgres
+ #   networks:
+ #     - aineko_network
+ #   environment:
+ #     POSTGRES_PASSWORD: neverever
+ #   ports:
+ #     - "5432:5432"
 networks:
   aineko_network:
     driver: bridge
