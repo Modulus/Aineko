@@ -100,3 +100,6 @@ ENV/
 .ropeproject
 ### Vagrant template
 .vagrant/
+
+#code
+.vscode

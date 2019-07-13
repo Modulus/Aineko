@@ -20,15 +20,14 @@ spec:
         env: 
           - name: ELASTICSEARCH_URL
             value: elasticsearch-client:9200
+
         readinessProbe:
           exec:
             command:
-              - python
-              - health.py
+              - python 
         livenessProbe:
-            exec:
-              command:
-                - python
-                - health.py
+          exec: 
+
+
 
 
