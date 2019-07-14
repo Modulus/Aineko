@@ -1,11 +1,23 @@
+from core.config_reader import read
+import os
 import newspaper
 import multiprocessing
 import logging
-from core import extractor
-import hashlib
-from elasticsearch import Elasticsearch
 
 logger = logging.getLogger("ArticleReader")
+
+
+def _collect_sites():
+    logger.info("Collecting config from confing/sites.yaml")
+    config_path = os.path.dirname(os.path.realpath(__file__))
+    sites_file = os.path.join(config_path, os.pardir, 'config', 'sites.yaml')
+    sites = read(sites_file)
+    if "sites" in sites:
+        logger.debug("Found sites, returning")
+        return sites["sites"]
+    else:
+        logger.error("No sites found, returning empty list")
+        return []
 
 
 def check_url(url):
@@ -28,40 +40,21 @@ def check_url(url):
         return False
 
 
-def collect_and_save_articles(url, elasticsearch_url, memoize_articles=False):
+def collect_articles():
+    sites = _collect_sites()
     article_array = []
-    logger.info("Collecting articles for site: {}".format(url))
-    paper = newspaper.build(url, memoize_articles=memoize_articles)
-    logger.info("Paper: {}".format(paper))
-    articles = paper.articles
-    logger.info("Found all articles")
-
-    # Elasticsearch client in version 7 does not like the port number. Stripping it here
-
-
-    client = Elasticsearch([elasticsearch_url], sniff_on_start=True, )
-    for article in articles:
-        try:
-            logger.debug("Article url: {}".format(article.url))
-            logger.info("Parsing article at {}".format(article.url))
-            article.download()
-            article.parse()
-            article.nlp()
-            logger.warning(f"RAW DATA: {article}")
-            curr_article = extractor.to_dict(article, "authors", "canonical_link", "metadata", "meta_description",
-                                             "link_hash", "keywords", "meta_img", "meta_keywords", "meta_lang", "movies",
-                                             "publish_date", "source_url", "summary", "text", "title", "top_image",
-                                             "url")   # TODO: tags is set, convert this to a list
-            if type(curr_article) is dict and "text" in curr_article and curr_article["text"]:
-                logger.info("Creating hash for current article")
-                curr_article["hash"] = hashlib.sha256(article.url.encode("utf-8")).hexdigest()
-                logger.info("Saving current article to elasticsearch using link_hash as id")
-                client.index(index="articles", doc_type="article", id=curr_article["hash"], body=curr_article)
-                article_array.append(curr_article)
-            else:
-                logger.warning("Article does not have text, skipping {}".format(curr_article))               
-        except newspaper.article.ArticleException as ex:
-            logger.error("Failed to extract article {}".format(ex))
+    for site in sites:
+        logger.info("Collecting articles for site: {}".format(site))
+        paper = newspaper.build(site, memoize_articles=False)
+        logger.info("Paper: {}".format(paper))
+        articles = paper.articles
+        logger.info("Found all articles")
+        for article in articles:
+            try:
+                logger.debug("Article url: {}".format(article.url))
+                article_array.append(article)
+            except newspaper.article.ArticleException as ex:
+                logger.error("Failed to extract article {}".format(ex))
     return article_array
 
 

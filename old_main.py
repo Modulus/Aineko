@@ -28,9 +28,11 @@ def run():
 
     url = "http://{}/_cluster/health".format(config.elasticsearch_url)
     logger.info("Url used for elasticsearch healthcheck: {}".format(url))
-    response = requests.get('https://api.github.com/user', auth=('user', 'pass'))
+    response = requests.get(f"{url}")
 
-    if len(all_sites) > cpu_count and 200 == response.status_code:
+    # len(all_sites) > cpu_count and
+
+    if 200 == response.status_code:
         logger.info("Collecting large amount of articles")
         logger.info("Chucking pages to scrape into lists of {} elements".format(cpu_count))
         sites = np.array_split(all_sites, cpu_count)
@@ -41,7 +43,7 @@ def run():
         end_time = time.time()
         logging.info("Started at: %s, ended at: %s, duration: %s", start_time, end_time, end_time - start_time)
     else:
-        logging.warn("Not config or elasticsearch found, skipping collection of data")
+        logging.warn("Ellol")
 
 
 if __name__ == "__main__":

@@ -1,7 +1,6 @@
 import logging
 
-logger = logging.getLogger("Extractor"
-                           "")
+logger = logging.getLogger("Extractor")
 
 def convert(data):
     """

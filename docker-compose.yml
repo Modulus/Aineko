@@ -1,7 +1,7 @@
-version: "3.3"
+version: "3.6"
 services:
   elasticsearch:
-    image: docker.elastic.co/elasticsearch/elasticsearch-oss:6.3.0
+    image: docker.elastic.co/elasticsearch/elasticsearch-oss:7.2.0
     container_name: anieko_elasticsearch
     ports:
       - "9200:9200"
@@ -23,7 +23,7 @@ services:
   kibana:
       depends_on:
         - elasticsearch
-      image: docker.elastic.co/kibana/kibana-oss:6.3.0
+      image: docker.elastic.co/kibana/kibana-oss:7.2.0
       container_name: aineko_kibana
       environment:
         SERVER_NAME: kibananananana
@@ -32,21 +32,23 @@ services:
         - "5601:5601"
       networks:
         - aineko_network
-  #aineko:
-  #  depends_on:
-  #    - elasticsearch
-  #  build: .
-  #  environment:
-  #    ELASTICSEARCH_URL: http://elasticsearch:9200
-  #  networks:
-  #    - aineko_network
-  #redis:
-  #  image: redis:4.0.11-alpine
-  #  container_name: aineko_redis
-  #  ports:
-  #    - "6379:6379"
-  #  networks:
-  #    - aineko_network
+  aineko:
+   depends_on:
+     - elasticsearch
+   build: .
+   environment:
+     ELASTICSEARCH_URL: elasticsearch # Omit http:// and port
+   networks:
+     - aineko_network
+  redis:
+    image: redis:5.0.5
+    container_name: redis
+    volumes:
+      - /home/modulus/data/redis:/data
+    ports:
+      - "6379:6379" 
+    networks:
+      - aineko_network
  # postgres:
  #   image: postgres:9.4-alpine
  #   container_name: aineko_postgres
