@@ -8,7 +8,7 @@ def read(config_file):
     logger.debug("Opening config file {}".format(config_file))
     with open(config_file, 'r') as stream:
         try:
-            data = yaml.load(stream)
+            data = yaml.load(stream, Loader=yaml.FullLoader)
             logger.info("Found config data, returning")
             logger.debug("Data: {}".format(data))
             return data

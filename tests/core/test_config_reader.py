@@ -1,14 +1,12 @@
 import pytest
-import yaml
-import os
 from core.config_reader import read
 
 
 @pytest.fixture
 def sites_file():
-    #config_path = os.path.dirname(os.path.realpath(__file__))
-    sites_file =  "config/sites.yaml" #os.path.join(config_path, "{}{}{}".format('config', os.path.sep, 'sites.yaml'))
+    sites_file = "config/sites.yaml"
     return sites_file
+
 
 def test_config_reader(sites_file):
     data = read("config/sites.yaml")
