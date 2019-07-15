@@ -3,8 +3,9 @@ def label = "mypod-${UUID.randomUUID().toString()}"
 podTemplate(label: label, containers : [
     containerTemplate( name: "builder", image: "rubblesnask/ubuntu_python3_pip3:18.04.1", ttyEnabled: true,
         envVars: [
-            envVar(key: "ELASTICSEARCH_URL", value: "localhost:9200")
+            envVar(key: "ELASTICSEARCH_URL", value: "elasticsearch:9200")
          ]),
+    containerTemplate( name: "elasticsearch", image: "docker.elastic.co/elasticsearch/elasticsearch-oss:7.2.0", ttyEnabled: true)
     containerTemplate( name: "docker", image: "docker", command: "cat", ttyEnabled: true)
     ],
     volumes: [hostPathVolume(hostPath: '/var/run/docker.sock', mountPath: '/var/run/docker.sock')]) {
