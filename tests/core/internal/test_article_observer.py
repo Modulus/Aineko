@@ -1,10 +1,10 @@
-import os
+# import os
 
-import pytest
-from rx import Observable
+# import pytest
+# from rx import Observable
 
-from core.config import Config
-from core.internal.papers_observer import PapersObserver
+# from core.config import Config
+# from core.internal.papers_observer import PapersObserver
 
 
 # @pytest.fixture

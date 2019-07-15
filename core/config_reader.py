@@ -13,6 +13,6 @@ def read(config_file):
             logger.debug("Data: {}".format(data))
             return data
         except yaml.YAMLError as error:
-            logger.error("Failed to read config data, fatal error: {}".format(error))
+            logger.error(
+                "Failed to read config data, fatal error: {}".format(error))
             print(error)
-

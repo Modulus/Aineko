@@ -8,8 +8,8 @@ from core.config_reader import read
 
 @pytest.fixture
 def sites_file():
-    config_path = os.path.dirname(os.path.realpath(os.path.curdir))
-    sites_file = os.path.join(config_path, "{}{}{}".format('config', os.path.sep, 'config.yaml'))
+    # config_path = os.path.dirname(os.path.realpath(os.path.curdir))
+    sites_file = os.path.join("config", "config.yaml") #os.path.join(config_path, "{}{}{}".format('config', os.path.sep, 'config.yaml'))
     return sites_file
 
 

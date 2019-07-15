@@ -1,4 +1,4 @@
-from core.redis.redis_handler import RedisHandler
+# from core.redis.redis_handler import RedisHandler
 
 # def test_reader():
 #     urls = [

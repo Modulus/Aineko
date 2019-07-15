@@ -37,7 +37,8 @@ services:
      - elasticsearch
    build: .
    environment:
-     ELASTICSEARCH_URL: elasticsearch # Omit http:// and port
+     ELASTICSEARCH_URL: elasticsearch:9200 # Omit http:// and port
+     REDIS_URL: redis://redis
    networks:
      - aineko_network
   redis:

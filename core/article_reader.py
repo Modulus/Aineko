@@ -1,6 +1,6 @@
-import newspaper
 import multiprocessing
 import logging
+import newspaper
 from core import extractor
 import hashlib
 from elasticsearch import Elasticsearch
@@ -28,16 +28,19 @@ def check_url(url):
         return False
 
 
-def collect_and_save_articles(url, elasticsearch_url, memoize_articles=False):
+# TODO: Refactor this
+def collect_and_save_articles(site_url,
+                              elasticsearch_url,
+                              memoize_articles=False):
     article_array = []
-    logger.info("Collecting articles for site: {}".format(url))
-    paper = newspaper.build(url, memoize_articles=memoize_articles)
+    logger.info("Collecting articles for site: {}".format(site_url))
+    paper = newspaper.build(site_url, memoize_articles=memoize_articles)
     logger.info("Paper: {}".format(paper))
     articles = paper.articles
     logger.info("Found all articles")
 
-    # Elasticsearch client in version 7 does not like the port number. Stripping it here
-
+    # Elasticsearch client in version 7 does not like the port number.
+    # Stripping it here
 
     client = Elasticsearch([elasticsearch_url], sniff_on_start=True, )
     for article in articles:
@@ -48,18 +51,30 @@ def collect_and_save_articles(url, elasticsearch_url, memoize_articles=False):
             article.parse()
             article.nlp()
             logger.warning(f"RAW DATA: {article}")
-            curr_article = extractor.to_dict(article, "authors", "canonical_link", "metadata", "meta_description",
-                                             "link_hash", "keywords", "meta_img", "meta_keywords", "meta_lang", "movies",
-                                             "publish_date", "source_url", "summary", "text", "title", "top_image",
-                                             "url")   # TODO: tags is set, convert this to a list
-            if type(curr_article) is dict and "text" in curr_article and curr_article["text"]:
+            curr_article = extractor.to_dict(article, "authors",
+                                             "canonical_link",
+                                             "metadata", "meta_description",
+                                             "link_hash", "keywords",
+                                             "meta_img", "meta_keywords",
+                                             "meta_lang", "movies",
+                                             "publish_date", "source_url",
+                                             "summary", "text", "title",
+                                             "top_image", "url")
+            # TODO: tags is set, convert this to a list
+            if type(curr_article) is dict and \
+                    "text" in curr_article and curr_article["text"]:
                 logger.info("Creating hash for current article")
-                curr_article["hash"] = hashlib.sha256(article.url.encode("utf-8")).hexdigest()
-                logger.info("Saving current article to elasticsearch using link_hash as id")
-                client.index(index="articles", doc_type="article", id=curr_article["hash"], body=curr_article)
+                curr_article["hash"] = hashlib.sha256(
+                    article.url.encode("utf-8")).hexdigest()
+                logger.info("Saving current article to elasticsearch \
+                    using link_hash as id")
+                client.index(index="articles", doc_type="article",
+                             id=curr_article["hash"],
+                             body=curr_article)
                 article_array.append(curr_article)
             else:
-                logger.warning("Article does not have text, skipping {}".format(curr_article))               
+                logger.warning(f"Article does not have text, \
+                    skipping {curr_article}")
         except newspaper.article.ArticleException as ex:
             logger.error("Failed to extract article {}".format(ex))
     return article_array
@@ -81,12 +96,13 @@ def _extract_articles(papers):
 
 # TODO: Refactor this to store articles into elasticsearch database on the fly
 def collect_articles_pool(memoize_articles=False):
-    sites = _collect_sites()
+    sites = []
     import numpy as np
     cpu_count = multiprocessing.cpu_count()
     if len(sites) > cpu_count:
         logger.info("Collecting large amount of articles")
-        logger.info("Chucking pages to scrape into lists of {} elements".format(cpu_count))
+        logger.info(
+            f"Chucking pages to scrape into lists of {cpu_count} elements")
         chunks = np.array_split(sites, cpu_count)
         articles = []
         for chunk in chunks:
@@ -98,8 +114,9 @@ def collect_articles_pool(memoize_articles=False):
         papers = []
         for site in sites:
             logger.info("Collecting data for site: {}".format(site))
-            papers.append(newspaper.build(str(site), memoize_articles=memoize_articles))
-        logger.info("Finished collecting articles")
+            papers.append(newspaper.build(str(site),
+                                          memoize_articles=memoize_articles))
+        logger.info("Finished collecting articles").format(cpu_count)
         newspaper.news_pool.set(papers, threads_per_source=1)
         newspaper.news_pool.join()
         return _extract_articles(papers)
@@ -113,7 +130,8 @@ def _collect_articles(sites, memoize_articles=False, threads_per_source=1):
     for site in sites:
         try:
             logger.info("Collecting data for site: {}".format(site))
-            papers.append(newspaper.build(str(site), memoize_articles=memoize_articles))
+            papers.append(newspaper.build(str(site),
+                                          memoize_articles=memoize_articles))
         except OSError as error:
             logger.error("Failed to build site because of: {}".format(error))
 

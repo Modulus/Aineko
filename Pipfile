@@ -8,6 +8,7 @@ flake8 = "*"
 docker-compose = "*"
 rope = "*"
 pytest = "*"
+autopep8 = "*"
 
 [packages]
 celery = "*"
@@ -15,6 +16,7 @@ elasticsearch = "==7.0.2"
 redis = "*"
 newspaper3k = "*"
 rx = "*"
+pytest = "*"
 
 [requires]
 python_version = "3.6"

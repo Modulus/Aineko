@@ -15,7 +15,7 @@ class PapersObserver(Observer):
 
     def on_next(self, paper):
         logger.info("Connecting to elasticsearch at {}".format(self.elasticsearch_url))
-        client = Elasticsearch([self.elasticsearch_url], sniff_on_start=True)
+        client = Elasticsearch([self.elasticsearch_url], sniff_on_start=True, )
         logger.debug("Parsing articles from paper {}".format(paper.url))
         for article in paper.articles:
             logger.debug("Parsing article {}".format(article.url))

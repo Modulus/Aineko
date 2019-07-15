@@ -2,13 +2,16 @@ import logging
 
 logger = logging.getLogger("Extractor")
 
+
 def convert(data):
     """
-    Take a list or single url string and convert it to valid url for the newspaper framework
+    Take a list or single url string and convert it to
+    valid url for the newspaper framework
     """
-    if type(data) is list:
-        return [extract_url(url) for url in data if type(url) is str and len(url) > 0]
-    elif type(data) is str:
+    if isinstance(data, list):
+        return [extract_url(url)
+                for url in data if isinstance(url, str) and len(url) > 0]
+    elif isinstance(data, str):
         return extract_url(data)
     else:
         raise TypeError("Input needs to be list")
@@ -33,14 +36,17 @@ def extract_articles(articles, keywords):
 
 def to_dict(article, *args):
     if args:
-        data = {key: convert_value(value) for key, value in article.__dict__.items() if key in args and value }
+        data = {key: convert_value(value)
+                for key, value in article.__dict__.items()
+                if key in args and value}
         return data
     else:
-        return dict(filter(lambda prop : prop in args, article.__dict__.items()))
+        return dict(filter(lambda prop:
+                           prop in args, article.__dict__.items()))
 
 
 def convert_value(value):
-    if type(value) is set:
+    if isinstance(value, set):
         logger.debug("Converting set to list")
         return list(value)
     else:

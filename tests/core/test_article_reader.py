@@ -2,7 +2,7 @@ import string
 
 import pytest
 import os
-from core.article_reader import collect_articles
+# from core.article_reader import collect_articles
 from core.article_reader import check_url
 from core.extractor import convert, extract_url, extract_articles
 
