@@ -3,7 +3,21 @@ from faker import Faker
 from core import extractor
 
 
-def test_convert_to_dict():
+def test_convert_to_dict_has_url_no_other_gets_result_with_url_and_source_url():
+    faker = Faker()
+
+    source = Article(url=faker.url())
+
+    result = extractor.to_dict(source, "article_html", "authors", "images",
+                               "keywords", "meta_data", "source_url",
+                               "summary", "top_image", "url", "tags",
+                               "meta_favicon")
+    assert len(result) >= 2
+    assert "url" in result
+    assert "source_url" in result
+
+
+def test_convert_to_dict_most_fields_works():
     faker = Faker()
 
     source = Article(url=faker.url())
