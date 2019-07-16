@@ -21,26 +21,37 @@ services:
     networks:
       - aineko_network
   kibana:
-      depends_on:
-        - elasticsearch
-      image: docker.elastic.co/kibana/kibana-oss:7.2.0
-      container_name: aineko_kibana
-      environment:
-        SERVER_NAME: kibananananana
-        ELASTICSEARCH_URL: http://elasticsearch:9200
-      ports:
-        - "5601:5601"
-      networks:
-        - aineko_network
-  aineko:
-   depends_on:
-     - elasticsearch
-   build: .
-   environment:
-     ELASTICSEARCH_URL: elasticsearch:9200 # Omit http:// and port
-     REDIS_URL: redis://redis
-   networks:
-     - aineko_network
+    depends_on:
+      - elasticsearch
+    image: docker.elastic.co/kibana/kibana-oss:7.2.0
+    container_name: aineko_kibana
+    environment:
+      SERVER_NAME: kibananananana
+      ELASTICSEARCH_URL: http://elasticsearch:9200
+    ports:
+      - "5601:5601"
+    networks:
+      - aineko_network
+  # aineko:
+  #  depends_on:
+  #    - elasticsearch
+  #  build: .
+  #  environment:
+  #    ELASTICSEARCH_URL: elasticsearch:9200 # Omit http:// and port
+  #    REDIS_URL: redis://redis
+  #  networks:
+  #    - aineko_network
+  settings:
+    depends_on:
+      - postgres
+    image: coderpews/aineko-settings:release-1.0.0
+    environment:
+      DB_CONNECTION_STRING: "jdbc:postgresql://postgres:5432/aineko?createDatabaseIfNotExist=true&useUnicode=yes&characterEncoding=UTF-8"
+      DB_USER: postgres
+      DB_PASSWORD: neverever
+    restart: on-failure
+    networks:
+      - aineko_network
   redis:
     image: redis:5.0.5
     container_name: redis
@@ -50,15 +61,17 @@ services:
       - "6379:6379" 
     networks:
       - aineko_network
- # postgres:
- #   image: postgres:9.4-alpine
- #   container_name: aineko_postgres
- #   networks:
- #     - aineko_network
- #   environment:
- #     POSTGRES_PASSWORD: neverever
- #   ports:
- #     - "5432:5432"
+  postgres:
+   image: postgres:10.4
+   container_name: aineko_postgres
+   networks:
+     - aineko_network
+   environment:
+     POSTGRES_PASSWORD: neverever
+     POSTGRES_USER: postgres
+     POSTGRES_DB: aineko
+   ports:
+     - "5432:5432"
 networks:
   aineko_network:
     driver: bridge
